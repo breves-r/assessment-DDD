@@ -1,0 +1,26 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'Franquia' Aggregate" <<Rectangle>> {
+	class Franquia <<(A,#fffab8) Aggregate Root>> {
+		String nome
+		FranquiaId id
+		Endereco endereco
+	}
+	class FranquiaId <<(V,DarkSeaGreen) Value Object>> {
+		int franquiaId
+	}
+	class Endereco <<(V,DarkSeaGreen) Value Object>> {
+		String rua
+		String numero
+		String cidade
+		String estado
+		String cep
+	}
+}
+Franquia --> FranquiaId : id
+Franquia --> Endereco : endereco
+
+
+@enduml

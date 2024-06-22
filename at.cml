@@ -1,0 +1,121 @@
+
+ContextMap PetFriends {
+    contains Credenciamento_de_Veterinarios
+    contains Gestao_de_Veterinarios
+    contains Agendamento_de_Servicos
+    contains Gestao_de_Franquias
+    contains Gestao_de_Passeadores
+    contains Ecommerce
+    contains Assinatura_de_Produtos
+
+    Gestao_de_Veterinarios [D, ACL] <- [U] Credenciamento_de_Veterinarios {
+        implementationTechnology = "RESTful HTTP"
+    }
+
+    Gestao_de_Veterinarios [D] <- [U, OHS, PL] Agendamento_de_Servicos {
+        implementationTechnology = "RESTful HTTP"
+    }
+
+    Gestao_de_Passeadores [D] <- [U, OHS, PL] Agendamento_de_Servicos {
+        implementationTechnology = "RESTful HTTP"
+    }
+
+    Agendamento_de_Servicos [D] <- [U, OHS, PL]  Gestao_de_Franquias{
+        implementationTechnology = "RESTful HTTP"
+    }
+    
+    Ecommerce [D] <- [U, OHS, PL]  Gestao_de_Franquias {
+        implementationTechnology = "RESTful HTTP"
+    }
+
+    Assinatura_de_Produtos [D] <- [U, OHS, PL] Ecommerce {
+        implementationTechnology = "RESTful HTTP"
+    }
+
+}
+
+BoundedContext Credenciamento_de_Veterinarios
+BoundedContext Gestao_de_Veterinarios
+BoundedContext Agendamento_de_Servicos {
+    Aggregate Agendamento {
+
+        Entity Agendamento {
+            aggregateRoot
+
+            - AgendamentoId id
+            - ClienteId clienteId
+            - ServicoId servicoId
+            - StatusAgendamento status
+            Date dataHora
+            String notasAdicionais
+        }
+
+        ValueObject AgendamentoId {
+            int agendamentoId key
+        }
+
+        ValueObject ClienteId {
+            int clienteId key
+        }
+
+        ValueObject StatusAgendamento {
+            String status
+        }
+    }
+
+    Aggregate Servico {
+
+        Entity Servico {
+            aggregateRoot
+
+            - ServicoId id
+            - List<ServicoLineItem> lineItems
+            - ProfessionalId professionalId
+            String nome
+            String descricao
+            double precoBase
+        }
+
+        ValueObject ServicoId {
+            int servicoId key
+        }
+
+        ValueObject ProfessionalId {
+            int professionalId key
+        }
+
+        Entity ServicoLineItem {
+            String descricao
+            double preco
+            int quantidade
+        }
+    }
+}
+
+BoundedContext Gestao_de_Franquias {
+    Aggregate Franquia {
+
+        Entity Franquia {
+            aggregateRoot
+
+            - FranquiaId id
+            - Endereco endereco
+            String nome 
+        }
+
+        ValueObject FranquiaId {
+			int franquiaId key
+		}
+
+        ValueObject Endereco {
+			String rua
+            String numero
+            String cidade
+            String estado
+            String cep
+		}
+    }
+}
+BoundedContext Gestao_de_Passeadores
+BoundedContext Ecommerce
+BoundedContext Assinatura_de_Produtos

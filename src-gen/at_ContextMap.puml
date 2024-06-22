@@ -1,0 +1,39 @@
+@startuml
+
+skinparam componentStyle uml2
+
+component [Credenciamento_de_Veterinarios]
+component [Gestao_de_Veterinarios]
+component [Agendamento_de_Servicos]
+component [Gestao_de_Franquias]
+component [Gestao_de_Passeadores]
+component [Ecommerce]
+component [Assinatura_de_Produtos]
+
+interface "RESTful HTTP" as Gestao_de_Veterinarios_to_Credenciamento_de_Veterinarios
+[Credenciamento_de_Veterinarios] --> Gestao_de_Veterinarios_to_Credenciamento_de_Veterinarios
+Gestao_de_Veterinarios_to_Credenciamento_de_Veterinarios <.. [Gestao_de_Veterinarios] : use via ANTICORRUPTION_LAYER
+
+interface "RESTful HTTP" as Gestao_de_Veterinarios_to_Agendamento_de_Servicos
+[Agendamento_de_Servicos] --> Gestao_de_Veterinarios_to_Agendamento_de_Servicos : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+Gestao_de_Veterinarios_to_Agendamento_de_Servicos <.. [Gestao_de_Veterinarios] : consume
+
+interface "RESTful HTTP" as Gestao_de_Passeadores_to_Agendamento_de_Servicos
+[Agendamento_de_Servicos] --> Gestao_de_Passeadores_to_Agendamento_de_Servicos : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+Gestao_de_Passeadores_to_Agendamento_de_Servicos <.. [Gestao_de_Passeadores] : consume
+
+interface "RESTful HTTP" as Agendamento_de_Servicos_to_Gestao_de_Franquias
+[Gestao_de_Franquias] --> Agendamento_de_Servicos_to_Gestao_de_Franquias : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+Agendamento_de_Servicos_to_Gestao_de_Franquias <.. [Agendamento_de_Servicos] : consume
+
+interface "RESTful HTTP" as Ecommerce_to_Gestao_de_Franquias
+[Gestao_de_Franquias] --> Ecommerce_to_Gestao_de_Franquias : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+Ecommerce_to_Gestao_de_Franquias <.. [Ecommerce] : consume
+
+interface "RESTful HTTP" as Assinatura_de_Produtos_to_Ecommerce
+[Ecommerce] --> Assinatura_de_Produtos_to_Ecommerce : OPEN_HOST_SERVICE, PUBLISHED_LANGUAGE
+Assinatura_de_Produtos_to_Ecommerce <.. [Assinatura_de_Produtos] : consume
+
+
+
+@enduml

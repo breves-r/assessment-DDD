@@ -1,0 +1,54 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'Agendamento' Aggregate" <<Rectangle>> {
+	class Agendamento <<(A,#fffab8) Aggregate Root>> {
+		Date dataHora
+		String notasAdicionais
+		AgendamentoId id
+		ClienteId clienteId
+		ServicoId servicoId
+		StatusAgendamento status
+	}
+	class AgendamentoId <<(V,DarkSeaGreen) Value Object>> {
+		int agendamentoId
+	}
+	class ClienteId <<(V,DarkSeaGreen) Value Object>> {
+		int clienteId
+	}
+	class StatusAgendamento <<(V,DarkSeaGreen) Value Object>> {
+		String status
+	}
+}
+package "'Servico' Aggregate" <<Rectangle>> {
+	class Servico <<(A,#fffab8) Aggregate Root>> {
+		String nome
+		String descricao
+		double precoBase
+		ServicoId id
+		List<ServicoLineItem> lineItems
+		ProfessionalId professionalId
+	}
+	class ServicoId <<(V,DarkSeaGreen) Value Object>> {
+		int servicoId
+	}
+	class ProfessionalId <<(V,DarkSeaGreen) Value Object>> {
+		int professionalId
+	}
+	class ServicoLineItem <<(E,DarkSeaGreen) Entity>> {
+		String descricao
+		double preco
+		int quantidade
+	}
+}
+Servico --> ServicoId : id
+Agendamento --> ClienteId : clienteId
+Agendamento --> AgendamentoId : id
+Agendamento --> StatusAgendamento : status
+Servico "1" *--> "*" ServicoLineItem : lineItems
+Servico --> ProfessionalId : professionalId
+Agendamento --> ServicoId : servicoId
+
+
+@enduml

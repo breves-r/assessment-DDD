@@ -1,0 +1,31 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'Servico' Aggregate" <<Rectangle>> {
+	class Servico <<(A,#fffab8) Aggregate Root>> {
+		String nome
+		String descricao
+		double precoBase
+		ServicoId id
+		List<ServicoLineItem> lineItems
+		ProfessionalId professionalId
+	}
+	class ServicoId <<(V,DarkSeaGreen) Value Object>> {
+		int servicoId
+	}
+	class ProfessionalId <<(V,DarkSeaGreen) Value Object>> {
+		int professionalId
+	}
+	class ServicoLineItem <<(E,DarkSeaGreen) Entity>> {
+		String descricao
+		double preco
+		int quantidade
+	}
+}
+Servico --> ServicoId : id
+Servico "1" *--> "*" ServicoLineItem : lineItems
+Servico --> ProfessionalId : professionalId
+
+
+@enduml
